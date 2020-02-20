@@ -1,15 +1,13 @@
 from subprocess import Popen, PIPE
 
 from data import Result, Response
-
-ansible_path = '/home/david/git/labs-infrastructure/'
-
+from settings import config
 
 def run_ansible(playbook, tag):
     p = Popen(['ansible-playbook', f'playbooks/{playbook}.yml', '-e', f'tag={tag}'],
             stdout=PIPE,
             stderr=PIPE,
-            cwd=ansible_path,
+            cwd=config.working_dir_for_ansible,
             )
     p.wait()
     OUT = p.stdout.read().decode('utf-8')

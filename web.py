@@ -1,6 +1,7 @@
 import os
 import json
 
+from settings import config
 from data import Result, Response
 from tasks import run_ansible
 
@@ -12,15 +13,12 @@ from rq import Queue as Rqueue
 
 app = FlaskAPI(__name__)
 q = Rqueue(connection=StrictRedis())
-repo_to_playbook = {
-        'recipes': 'recipes-deploy',
-        }
 
 
 @app.route("/deploy/<string:repo>/<string:tag>", methods=['POST', 'GET'])
 def deploy(repo, tag):
     repo = repo.lower()
-    job = q.enqueue(run_ansible, repo_to_playbook[repo], tag)
+    job = q.enqueue(run_ansible, config.repo_mappings[repo], tag)
     job_key = job.key.decode('utf-8').lstrip('rq:job:')
     url = url_for('get_queue', job_id=job_key, _external=True)
     response = make_response()
