@@ -1,7 +1,7 @@
 import os
 import json
+import logging
 
-from settings import config
 from data import Result, Response
 from tasks import run_ansible
 
@@ -13,14 +13,28 @@ from rq import Queue as Rqueue
 
 app = FlaskAPI(__name__)
 q = Rqueue(connection=StrictRedis())
+logging.basicConfig(level=logging.INFO)
+logging.getLogger('waitress').setLevel(logging.INFO)
+log = logging.getLogger(__name__)
 
-
-@app.route("/deploy/<string:repo>/<string:tag>", methods=['POST', 'GET'])
-def deploy(repo, tag):
+@app.route("/sync/deploy/<string:repo>/<string:subproject>/<string:ref>", methods=['POST', 'GET'])
+def sync_deploy(repo, subproject, ref):
+    log.info(f'Sync deploy request {repo}.{subproject} {ref}')
     repo = repo.lower()
-    job = q.enqueue(run_ansible, config.repo_mappings[repo], tag)
+    run_result = run_ansible(repo, subproject, ref)
+    msg = f'<pre>{run_result.message}</pre>'
+    if run_result.result == Result.Failure:
+        return msg, status.HTTP_400_BAD_REQUEST
+    return msg, status.HTTP_202_ACCEPTED
+
+@app.route("/deploy/<string:repo>/<string:subproject>/<string:ref>", methods=['POST', 'GET'])
+def deploy(repo, subproject, ref):
+    log.info(f'Deploy request {repo}.{subproject} {ref}')
+    repo = repo.lower()
+    job = q.enqueue(run_ansible, repo, subproject, ref)
     job_key = job.key.decode('utf-8').lstrip('rq:job:')
     url = url_for('get_queue', job_id=job_key, _external=True)
+    log.info(f'Queue status will be available at {url}')
     response = make_response()
     response.headers['Location'] = url
     return response, status.HTTP_202_ACCEPTED
@@ -37,6 +51,7 @@ def get_queue(job_id):
         return "", status.HTTP_200_OK
     else:
         url = url_for('get_status', job_id=job_id, _external=True)
+        log.info(f'Result will be available at {url}')
         response.headers["Location"] = url
         return response, status.HTTP_303_SEE_OTHER
 
