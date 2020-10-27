@@ -1,7 +1,7 @@
 ansible==2.8.8
 cffi==1.14.0
 Click==7.0
-cryptography==2.8
+cryptography==3.2
 Flask==1.1.1
 Flask-API==2.0
 itsdangerous==1.1.0
