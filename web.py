@@ -17,21 +17,21 @@ logging.basicConfig(level=logging.INFO)
 logging.getLogger('waitress').setLevel(logging.INFO)
 log = logging.getLogger(__name__)
 
-@app.route("/sync/deploy/<string:repo>/<string:subproject>/<string:ref>", methods=['POST', 'GET'])
-def sync_deploy(repo, subproject, ref):
-    log.info(f'Sync deploy request {repo}.{subproject} {ref}')
+@app.route("/sync/deploy/<string:repo>/<string:ref>", methods=['POST', 'GET'])
+def sync_deploy(repo, ref):
+    log.info(f'Sync deploy request {repo} {ref}')
     repo = repo.lower()
-    run_result = run_ansible(repo, subproject, ref)
+    run_result = run_ansible(repo, ref)
     msg = f'<pre>{run_result.message}</pre>'
     if run_result.result == Result.Failure:
         return msg, status.HTTP_400_BAD_REQUEST
     return msg, status.HTTP_202_ACCEPTED
 
-@app.route("/deploy/<string:repo>/<string:subproject>/<string:ref>", methods=['POST', 'GET'])
-def deploy(repo, subproject, ref):
-    log.info(f'Deploy request {repo}.{subproject} {ref}')
+@app.route("/deploy/<string:repo>/<string:ref>", methods=['POST', 'GET'])
+def deploy(repo, ref):
+    log.info(f'Deploy request {repo} {ref}')
     repo = repo.lower()
-    job = q.enqueue(run_ansible, repo, subproject, ref)
+    job = q.enqueue(run_ansible, repo, ref)
     job_key = job.key.decode('utf-8').lstrip('rq:job:')
     url = url_for('get_queue', job_id=job_key, _external=True)
     log.info(f'Queue status will be available at {url}')

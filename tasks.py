@@ -7,13 +7,20 @@ from settings import config
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
-
-def run_ansible(project, subproject, ref):
+project_to_playbook = {
+        "resume": 'playbooks/recipes.yml',
+        "recipes": 'playbooks/recipes.yml',
+        "voices_of_meyserside": 'playbooks/recipes.yml',
+        "critter-crossing": 'playbooks/recipes.yml',
+        "eba-next": 'playbooks/recipes.yml',
+        "twitch-master-fe": 'playbooks/recipes.yml',
+        "builder": 'playbooks/ci.yml',
+    }
+def run_ansible(project, ref):
     log.info(f'Starting job for {project} {ref}')
     command = ['ansible-playbook', '-i', 'inventory.py',
-               f'playbooks/recipes.yml', '-e', f'ref={ref}',
+               project_to_playbook[project], '-e', f'ref={ref}',
                '-e', f'project_to_deploy={project}',
-               '-e', f'subproject_to_deploy={subproject}',
                '--tags=deploy']
     str_command = ' '.join(command)
     log.info(f'Command will be {str_command}')
@@ -23,7 +30,7 @@ def run_ansible(project, subproject, ref):
             cwd=config.working_dir_for_ansible,
             )
     p.wait()
-    log.info(f'Done with {project}.{subproject} {ref}, return code: {p.returncode}')
+    log.info(f'Done with {project} {ref}, return code: {p.returncode}')
     OUT = p.stdout.read().decode('utf-8')
     log.info(f'stdout is {OUT}')
     if p.returncode == 0:
