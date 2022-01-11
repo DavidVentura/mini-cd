@@ -13,7 +13,7 @@ project_to_playbook = {
         "voices_of_meyserside": 'playbooks/recipes.yml',
         "critter-crossing": 'playbooks/recipes.yml',
         "eba-next": 'playbooks/recipes.yml',
-        "twitch-master-fe": 'playbooks/recipes.yml',
+        "twitch-master-fe": 'playbooks/twitch.yml',
         "builder": 'playbooks/ci.yml',
     }
 def run_ansible(project, ref):
