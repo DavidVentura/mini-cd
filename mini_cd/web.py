@@ -22,7 +22,7 @@ def sync_deploy(repo, ref):
     log.info(f'Sync deploy request {repo} {ref}')
     repo = repo.lower()
     run_result = run_ansible(repo, ref)
-    msg = f'<pre>{run_result.message}</pre>'
+    msg = run_result.message
     if run_result.result == Result.Failure:
         return msg, status.HTTP_400_BAD_REQUEST
     return msg, status.HTTP_202_ACCEPTED
@@ -65,7 +65,7 @@ def get_status(job_id):
         return {'Exception': job.exc_info}, status.HTTP_406_NOT_ACCEPTABLE
 
     result = job.result.result
-    msg = f'<pre>{job.result.message}</pre>'
+    msg = job.result.message
     if result == Result.Failure:
         return msg, status.HTTP_400_BAD_REQUEST
 
