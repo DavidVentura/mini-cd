@@ -2,8 +2,8 @@ import logging
 
 from subprocess import Popen, PIPE
 
-from data import Result, Response
-from settings import config
+from mini_cd.data import Result, Response
+from mini_cd.settings import config
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)

@@ -2,8 +2,8 @@ import os
 import json
 import logging
 
-from data import Result, Response
-from tasks import run_ansible
+from mini_cd.data import Result, Response
+from mini_cd.tasks import run_ansible
 
 from flask_api import FlaskAPI, status
 from flask import url_for, make_response
@@ -72,5 +72,8 @@ def get_status(job_id):
     return msg, status.HTTP_200_OK
 
 
-if __name__ == "__main__":
+def main():
     serve(app)
+
+if __name__ == "__main__":
+    main()
