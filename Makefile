@@ -1,3 +1,5 @@
+.PHONY: all copy
+
 all: dist/rq dist/ansible-playbook
 	mkdir -p dist
 	pip install -e .
@@ -8,3 +10,6 @@ dist/ansible-playbook:
 
 dist/rq:
 	shiv -c rq -o dist/rq rq
+
+copy:
+	scp -r dist/ cd:bin
