@@ -14,10 +14,19 @@ project_to_playbook = {
         "critter-crossing": 'playbooks/recipes.yml',
         "eba-next": 'playbooks/recipes.yml',
         "twitch-master-fe": 'playbooks/twitch.yml',
+        "twitch-backend": 'playbooks/twitch.yml',
         "builder": 'playbooks/ci.yml',
     }
 def run_ansible(project, ref):
     log.info(f'Starting job for {project} {ref}')
+    log.info(f'Updating repo')
+    p = Popen(['git', 'pull'],
+            stdout=PIPE,
+            stderr=PIPE,
+            cwd=config.working_dir_for_ansible,
+            )
+    p.wait()
+    log.info(f'Repo updated, executing CD')
     command = ['ansible-playbook', '-i', 'inventory.py',
                project_to_playbook[project], '-e', f'ref={ref}',
                '-e', f'project_to_deploy={project}',
