@@ -15,7 +15,7 @@ setup(
         'MarkupSafe==2.0.1',
         'PyYAML==6.0',
         'Werkzeug==2.0.2',
-        'ansible==2.9.18',
+        'ansible==7.0.0',
         'cffi==1.15.0',
         'click==8.0.3',
         'cryptography==36.0.1',
