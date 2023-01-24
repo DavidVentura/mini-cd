@@ -25,7 +25,7 @@ setup(
         'pyparsing==3.0.6',
         'redis==4.1.0',
         'rq==1.10.1',
-        'waitress==2.0.0',
+        'waitress==2.1.2',
         'wheel==0.38.1',
         'wrapt==1.13.3',
     ],
