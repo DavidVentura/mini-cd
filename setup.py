@@ -26,7 +26,7 @@ setup(
         'redis==4.1.0',
         'rq==1.10.1',
         'waitress==2.0.0',
-        'wheel==0.37.1',
+        'wheel==0.38.1',
         'wrapt==1.13.3',
     ],
     extras_require={
