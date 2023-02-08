@@ -18,7 +18,7 @@ setup(
         'ansible==2.9.18',
         'cffi==1.15.0',
         'click==8.0.3',
-        'cryptography==36.0.1',
+        'cryptography==39.0.1',
         'itsdangerous==2.0.1',
         'packaging==21.3',
         'pycparser==2.21',
