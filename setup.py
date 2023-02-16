@@ -14,7 +14,7 @@ setup(
         'Jinja2==3.0.3',
         'MarkupSafe==2.0.1',
         'PyYAML==6.0',
-        'Werkzeug==2.0.2',
+        'Werkzeug==2.2.3',
         'ansible==2.9.18',
         'cffi==1.15.0',
         'click==8.0.3',
