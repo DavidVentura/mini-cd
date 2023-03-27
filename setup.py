@@ -23,7 +23,7 @@ setup(
         'packaging==21.3',
         'pycparser==2.21',
         'pyparsing==3.0.6',
-        'redis==4.1.0',
+        'redis==4.5.3',
         'rq==1.10.1',
         'waitress==2.1.1',
         'wheel==0.38.1',
