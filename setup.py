@@ -11,11 +11,7 @@ setup(
     install_requires=[
         'Flask-API==3.0.post1',
         'Flask==2.0.2',
-        'Jinja2==3.0.3',
-        'MarkupSafe==2.0.1',
-        'ansible==9.2.0',
         'cryptography==36.0.1',
-        'pyparsing==3.0.6',
         'redis==4.1.0',
         'rq==1.10.1',
         'waitress==2.1.1',
