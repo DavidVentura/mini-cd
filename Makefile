@@ -1,6 +1,9 @@
 .PHONY: all copy
 
-all: dist/rq dist/ansible-playbook Makefile
+all: dist/rq dist/ansible-playbook Makefile dist/webserver
+	:
+
+dist/webserver:
 	mkdir -p dist
 	pip install -e .
 	shiv -e 'mini_cd.web:main' -o dist/webserver -E .
